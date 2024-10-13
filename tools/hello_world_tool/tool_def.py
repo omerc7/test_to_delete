@@ -7,7 +7,7 @@ from kubiya_sdk.tools.models import Tool, Arg, FileSpec
 from kubiya_sdk.tools.registry import tool_registry
 
 hello_tool = Tool(
-    name="get_weather",
+    name="say_hello",
     type="docker",
     image="python:3.12",
     description="Prints hello {name}!",
