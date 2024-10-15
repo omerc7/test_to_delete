@@ -2,6 +2,7 @@ import argparse
 import re
 from functools import wraps
 import inspect
+import secrets
 from typing import Callable
 from typing_extensions import Annotated
 import typer
@@ -37,7 +38,8 @@ def test_123(
 @function_tool(
     description="Prints pandas {name}!",
     requirements=["litellm==1.49.4"],
-    env=["LLM_API_KEY", "LLM_BASE_URL"],
+    env=["LLM_BASE_URL"],
+    secrets=["LLM_API_KEY"],
 )
 def litellm_hello_world(
     name: str,
