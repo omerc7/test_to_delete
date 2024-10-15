@@ -95,7 +95,7 @@
         {
           "source": null,
           "destination": "/tmp/requirements.txt",
-          "content": "\npandas==2.2.3\n"
+          "content": "\npandas==2.2.3\n\ntyper==0.12.5\n"
         }
       ],
       "with_services": [],
