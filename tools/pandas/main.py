@@ -3,6 +3,9 @@ import re
 from functools import wraps
 import inspect
 from typing import Callable
+from typing_extensions import Annotated
+import typer
+
 import pandas as pd
 
 # from main import function_tool
@@ -16,7 +19,8 @@ from kubiya_sdk.tools import function_tool
 pandas==2.2.3
 """,
 )
-def test_123(name: str, bla: bool, test: str = "sheeesh"):
+def test_123(name: str, bla: bool, test: Annotated[str, typer.Argument()] = "sheeesh"):
+    from typing_extensions import Annotated
     import pandas as pd
 
     print(f"Hello {name}! {bla} {test}")
