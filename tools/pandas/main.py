@@ -17,6 +17,8 @@ pandas==2.2.3
 """,
 )
 def test_123(name: str, bla: bool, test: str = "sheeesh"):
+    import pandas as pd
+
     print(f"Hello {name}! {bla} {test}")
     df = pd.DataFrame({"name": [name]})
 
