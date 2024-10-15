@@ -19,24 +19,18 @@ from kubiya_sdk.tools import function_tool
 pandas==2.2.3
 """,
 )
-def test_123(name: str, bla: bool, test: Annotated[str, typer.Argument()] = "sheeesh"):
-    from typing_extensions import Annotated
+def test_123(
+    name: str,
+    boolean_val: bool,  # This will validate that the input is a boolean
+    optional_str: Annotated[
+        str, typer.Argument()
+    ] = "sheeesh",  # This is how to add a default value
+):
     import pandas as pd
 
-    print(f"Hello {name}! {bla} {test}")
-    df = pd.DataFrame({"name": [name]})
+    print(f"Hello {name}! {boolean_val} {optional_str}")
+    df = pd.DataFrame(
+        {"name": [name], "boolean_val": [boolean_val], "test": [optional_str]}
+    )
 
     print(df)
-
-
-# if __name__ == "__main__":
-#     parser = argparse.ArgumentParser(description="Pandas {name}!")
-#     parser.add_argument("name", help="Name to say hello to")
-
-#     # Parse command-line arguments
-#     args = parser.parse_args()
-
-#     # Get coordinates for the given city
-#     name = args.name
-
-#     pandas(name)

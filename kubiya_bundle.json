@@ -50,7 +50,7 @@
       "alias": null,
       "description": "Prints pandas {name}!",
       "type": "docker",
-      "content": "\ncurl -LsSf https://astral.sh/uv/install.sh | sh > /dev/null 2>&1\n. $HOME/.cargo/env\n\nuv venv > /dev/null 2>&1\n. .venv/bin/activate > /dev/null 2>&1\n\nuv pip install -r /tmp/requirements.txt > /dev/null 2>&1\n\npython /tmp/main.py \"{{ .name }}\" \"{{ .bla }}\" \"{{ .test }}\"\n",
+      "content": "\ncurl -LsSf https://astral.sh/uv/install.sh | sh > /dev/null 2>&1\n. $HOME/.cargo/env\n\nuv venv > /dev/null 2>&1\n. .venv/bin/activate > /dev/null 2>&1\n\nuv pip install -r /tmp/requirements.txt > /dev/null 2>&1\n\npython /tmp/main.py \"{{ .name }}\" \"{{ .boolean_val }}\" \"{{ .optional_str }}\"\n",
       "content_url": null,
       "args": [
         {
@@ -63,18 +63,18 @@
           "options_from": null
         },
         {
-          "name": "bla",
+          "name": "boolean_val",
           "type": null,
-          "description": "Input param for arg: bla, type: string, Options: true, false",
+          "description": "Input param for arg: boolean_val, type: string, Options: true, false",
           "required": true,
           "default": null,
           "options": null,
           "options_from": null
         },
         {
-          "name": "test",
+          "name": "optional_str",
           "type": null,
-          "description": "Input param for arg: test, type: string",
+          "description": "Input param for arg: optional_str, type: string",
           "required": false,
           "default": "sheeesh",
           "options": null,
@@ -90,7 +90,7 @@
         {
           "source": null,
           "destination": "/tmp/main.py",
-          "content": "\nfrom typing_extensions import Annotated\n\nimport typer\n\ndef test_123(name: str, bla: bool, test: Annotated[str, typer.Argument()] = \"sheeesh\"):\n    from typing_extensions import Annotated\n    import pandas as pd\n\n    print(f\"Hello {name}! {bla} {test}\")\n    df = pd.DataFrame({\"name\": [name]})\n\n    print(df)\n\n\nif __name__ == \"__main__\":\n    typer.run(test_123)\n"
+          "content": "\nfrom typing_extensions import Annotated\n\nimport typer\n\ndef test_123(\n    name: str,\n    boolean_val: bool,  # This will validate that the input is a boolean\n    optional_str: Annotated[\n        str, typer.Argument()\n    ] = \"sheeesh\",  # This is how to add a default value\n):\n    import pandas as pd\n\n    print(f\"Hello {name}! {boolean_val} {optional_str}\")\n    df = pd.DataFrame(\n        {\"name\": [name], \"boolean_val\": [boolean_val], \"test\": [optional_str]}\n    )\n\n    print(df)\n\n\nif __name__ == \"__main__\":\n    typer.run(test_123)\n"
         },
         {
           "source": null,
@@ -107,7 +107,7 @@
       "long_running": false,
       "on_start": null,
       "on_complete": null,
-      "mermaid": "graph TD\n    %% Styles\n    classDef triggerClass fill:#3498db,color:#fff,stroke:#2980b9,stroke-width:2px,font-weight:bold\n    classDef paramClass fill:#2ecc71,color:#fff,stroke:#27ae60,stroke-width:2px\n    classDef execClass fill:#e74c3c,color:#fff,stroke:#c0392b,stroke-width:2px,font-weight:bold\n    classDef envClass fill:#f39c12,color:#fff,stroke:#f1c40f,stroke-width:2px\n\n    %% Main Components\n    Trigger(\"Trigger\"):::triggerClass\n    Params(\"Parameters\"):::paramClass\n    Exec(\"test_123\"):::execClass\n    Env(\"Environment\"):::envClass\n\n    %% Flow\n    Trigger --> Params --> Exec\n    Env --> Exec\n\n    %% Trigger Options\n    User(\"User\")\n    API(\"API\")\n    Webhook(\"Webhook\")\n    Cron(\"Scheduled\")\n    User --> Trigger\n    API --> Trigger\n    Webhook --> Trigger\n    Cron --> Trigger\n\n    %% Parameters\n    subgraph Parameters[\"Parameters\"]\n        direction TB\n        Param0(\"name (Required)<br/>Input param for arg: name, type: string\"):::paramClass\n        Param1(\"bla (Required)<br/>Input param for arg: bla, type: string, Options: true, false\"):::paramClass\n        Param2(\"test (Optional)<br/>Input param for arg: test, type: string<br/>Default: sheeesh\"):::paramClass\n    end\n    Parameters --- Params\n\n    %% Execution\n    subgraph Execution[\"Execution\"]\n        direction TB\n        Code(\"Script: <br/>curl -LsSf https://astral.sh/uv/install.sh | sh >...\")\n        Type(\"Type: Docker\")\n        Image(\"Docker Image: python:3.12\")\n    end\n    Execution --- Exec\n\n    %% Environment\n    subgraph Environment[\"Environment\"]\n        direction TB\n    end\n    Environment --- Env\n\n    %% Context Note\n    ContextNote(\"Parameter values can be<br/>fetched from context<br/>based on the trigger\")\n    ContextNote -.-> Params",
+      "mermaid": "graph TD\n    %% Styles\n    classDef triggerClass fill:#3498db,color:#fff,stroke:#2980b9,stroke-width:2px,font-weight:bold\n    classDef paramClass fill:#2ecc71,color:#fff,stroke:#27ae60,stroke-width:2px\n    classDef execClass fill:#e74c3c,color:#fff,stroke:#c0392b,stroke-width:2px,font-weight:bold\n    classDef envClass fill:#f39c12,color:#fff,stroke:#f1c40f,stroke-width:2px\n\n    %% Main Components\n    Trigger(\"Trigger\"):::triggerClass\n    Params(\"Parameters\"):::paramClass\n    Exec(\"test_123\"):::execClass\n    Env(\"Environment\"):::envClass\n\n    %% Flow\n    Trigger --> Params --> Exec\n    Env --> Exec\n\n    %% Trigger Options\n    User(\"User\")\n    API(\"API\")\n    Webhook(\"Webhook\")\n    Cron(\"Scheduled\")\n    User --> Trigger\n    API --> Trigger\n    Webhook --> Trigger\n    Cron --> Trigger\n\n    %% Parameters\n    subgraph Parameters[\"Parameters\"]\n        direction TB\n        Param0(\"name (Required)<br/>Input param for arg: name, type: string\"):::paramClass\n        Param1(\"boolean_val (Required)<br/>Input param for arg: boolean_val, type: string, Options: true, false\"):::paramClass\n        Param2(\"optional_str (Optional)<br/>Input param for arg: optional_str, type: string<br/>Default: sheeesh\"):::paramClass\n    end\n    Parameters --- Params\n\n    %% Execution\n    subgraph Execution[\"Execution\"]\n        direction TB\n        Code(\"Script: <br/>curl -LsSf https://astral.sh/uv/install.sh | sh >...\")\n        Type(\"Type: Docker\")\n        Image(\"Docker Image: python:3.12\")\n    end\n    Execution --- Exec\n\n    %% Environment\n    subgraph Environment[\"Environment\"]\n        direction TB\n    end\n    Environment --- Env\n\n    %% Context Note\n    ContextNote(\"Parameter values can be<br/>fetched from context<br/>based on the trigger\")\n    ContextNote -.-> Params",
       "workflow": false,
       "metadata": {}
     },
@@ -139,7 +139,7 @@
         {
           "source": null,
           "destination": "/tmp/main.py",
-          "content": "import argparse\nimport re\nfrom functools import wraps\nimport inspect\nfrom typing import Callable\nfrom typing_extensions import Annotated\nimport typer\n\nimport pandas as pd\n\n# from main import function_tool\nfrom kubiya_sdk.tools.models import Arg, Tool, FileSpec\nfrom kubiya_sdk.tools import function_tool\n\n\n@function_tool(\n    description=\"Prints pandas {name}!\",\n    requirements=\"\"\"\npandas==2.2.3\n\"\"\",\n)\ndef test_123(name: str, bla: bool, test: Annotated[str, typer.Argument()] = \"sheeesh\"):\n    from typing_extensions import Annotated\n    import pandas as pd\n\n    print(f\"Hello {name}! {bla} {test}\")\n    df = pd.DataFrame({\"name\": [name]})\n\n    print(df)\n\n\n# if __name__ == \"__main__\":\n#     parser = argparse.ArgumentParser(description=\"Pandas {name}!\")\n#     parser.add_argument(\"name\", help=\"Name to say hello to\")\n\n#     # Parse command-line arguments\n#     args = parser.parse_args()\n\n#     # Get coordinates for the given city\n#     name = args.name\n\n#     pandas(name)\n"
+          "content": "import argparse\nimport re\nfrom functools import wraps\nimport inspect\nfrom typing import Callable\nfrom typing_extensions import Annotated\nimport typer\n\nimport pandas as pd\n\n# from main import function_tool\nfrom kubiya_sdk.tools.models import Arg, Tool, FileSpec\nfrom kubiya_sdk.tools import function_tool\n\n\n@function_tool(\n    description=\"Prints pandas {name}!\",\n    requirements=\"\"\"\npandas==2.2.3\n\"\"\",\n)\ndef test_123(\n    name: str,\n    boolean_val: bool,  # This will validate that the input is a boolean\n    optional_str: Annotated[\n        str, typer.Argument()\n    ] = \"sheeesh\",  # This is how to add a default value\n):\n    import pandas as pd\n\n    print(f\"Hello {name}! {boolean_val} {optional_str}\")\n    df = pd.DataFrame(\n        {\"name\": [name], \"boolean_val\": [boolean_val], \"test\": [optional_str]}\n    )\n\n    print(df)\n"
         },
         {
           "source": null,
