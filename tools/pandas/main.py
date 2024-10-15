@@ -52,7 +52,7 @@ def litellm_hello_world(
 
     try:
         response = litellm.completion(
-            model="ggpt-4o",
+            model="openai/gpt-4o",
             api_key=llm_key,
             base_url=llm_base_url,
             messages=[
