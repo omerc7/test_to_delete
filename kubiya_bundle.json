@@ -115,7 +115,7 @@
       "name": "litellm_hello_world",
       "source": null,
       "alias": null,
-      "description": "Prints pandas {name}!",
+      "description": "Greats a person via llm {name}!",
       "type": "docker",
       "content": "\ncurl -LsSf https://astral.sh/uv/install.sh | sh > /dev/null 2>&1\n. $HOME/.cargo/env\n\nuv venv > /dev/null 2>&1\n. .venv/bin/activate > /dev/null 2>&1\n\nuv pip install -r /tmp/requirements.txt > /dev/null 2>&1\n\npython /tmp/main.py \"{{ .name }}\"\n",
       "content_url": null,

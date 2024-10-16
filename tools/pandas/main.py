@@ -36,7 +36,7 @@ def test_123(
 
 
 @function_tool(
-    description="Prints pandas {name}!",
+    description="Greats a person via llm {name}!",
     requirements=["litellm==1.49.4"],
     env=["LLM_BASE_URL"],
     secrets=["LLM_API_KEY"],
