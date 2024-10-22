@@ -28,7 +28,7 @@
         {
           "source": null,
           "destination": "/tmp/main.py",
-          "content": "import argparse\n\n\ndef hello_world(name: str):\n    print(f\"Hello, {name}!\")\n\n\nif __name__ == \"__main__\":\n    parser = argparse.ArgumentParser(description=\"Print hello {name}!\")\n    parser.add_argument(\"name\", help=\"Name to say hello to\")\n\n    # Parse command-line arguments\n    args = parser.parse_args()\n\n    # Get coordinates for the given city\n    name = args.name\n\n    hello_world(name)\n"
+          "content": "import os\nimport argparse\n\n# import pdb\n\n# pdb.set_trace()\n# a = os.environ[\"JUST_AN_ENV_VAR\"]\n\n\ndef hello_world(name: str):\n    print(f\"Hello, {name}!\")\n\n\nif __name__ == \"__main__\":\n    parser = argparse.ArgumentParser(description=\"Print hello {name}!\")\n    parser.add_argument(\"name\", help=\"Name to say hello to\")\n\n    # Parse command-line arguments\n    args = parser.parse_args()\n\n    # Get coordinates for the given city\n    name = args.name\n\n    hello_world(name)\n"
         }
       ],
       "with_services": [],
@@ -90,7 +90,7 @@
         {
           "source": null,
           "destination": "/tmp/main.py",
-          "content": "\nfrom typing_extensions import Annotated\n\nimport typer\n\ndef test_123(\n    name: str,\n    boolean_val: bool,  # This will validate that the input is a boolean\n    optional_str: Annotated[\n        str, typer.Argument()\n    ] = \"sheeesh\",  # This is how to add a default value\n):\n    import pandas as pd\n\n    print(f\"Hello {name}! {boolean_val} {optional_str}\")\n    df = pd.DataFrame(\n        {\"name\": [name], \"boolean_val\": [boolean_val], \"test\": [optional_str]}\n    )\n\n    print(df)\n\n\nif __name__ == \"__main__\":\n    typer.run(test_123)\n"
+          "content": "\nfrom typing_extensions import Annotated\n\nimport typer\n\napp = typer.Typer(rich_markup_mode=None, add_completion=False)\n\ndef test_123(\n    name: str,\n    boolean_val: bool,  # This will validate that the input is a boolean\n    optional_str: Annotated[\n        str, typer.Argument()\n    ] = \"sheeesh\",  # This is how to add a default value\n):\n    import pandas as pd\n\n    print(f\"Hello {name}! {boolean_val} {optional_str}\")\n    df = pd.DataFrame(\n        {\"name\": [name], \"boolean_val\": [boolean_val], \"test\": [optional_str]}\n    )\n\n    print(df)\n\n\napp.command()test_123\n\nif __name__ == \"__main__\":\n    app()\n"
         },
         {
           "source": null,
@@ -143,7 +143,7 @@
         {
           "source": null,
           "destination": "/tmp/main.py",
-          "content": "\nfrom typing_extensions import Annotated\n\nimport typer\n\ndef litellm_hello_world(\n    name: str,\n):\n    import os\n    import litellm\n\n    llm_key = os.environ[\"LLM_API_KEY\"]\n    llm_base_url = os.environ[\"LLM_BASE_URL\"]\n\n    try:\n        response = litellm.completion(\n            model=\"openai/gpt-4o\",\n            api_key=llm_key,\n            base_url=llm_base_url,\n            messages=[\n                {\n                    \"content\": f\"Your task it to great people in a random movie star way, you must say which movie star you choose\",\n                    \"role\": \"system\",\n                },\n                {\"content\": f\"My name is {name}, greet me!\", \"role\": \"user\"},\n            ],\n        )\n    except Exception as e:\n        print(e)\n        return\n\n    print(response.choices[0].message.content)\n\n\nif __name__ == \"__main__\":\n    typer.run(litellm_hello_world)\n"
+          "content": "\nfrom typing_extensions import Annotated\n\nimport typer\n\napp = typer.Typer(rich_markup_mode=None, add_completion=False)\n\ndef litellm_hello_world(\n    name: str,\n):\n    import os\n    import litellm\n\n    llm_key = os.environ[\"LLM_API_KEY\"]\n    llm_base_url = os.environ[\"LLM_BASE_URL\"]\n\n    try:\n        response = litellm.completion(\n            model=\"openai/gpt-4o\",\n            api_key=llm_key,\n            base_url=llm_base_url,\n            messages=[\n                {\n                    \"content\": f\"Your task it to great people in a random movie star way, you must say which movie star you choose\",\n                    \"role\": \"system\",\n                },\n                {\"content\": f\"My name is {name}, greet me!\", \"role\": \"user\"},\n            ],\n        )\n    except Exception as e:\n        print(e)\n        return\n\n    print(response.choices[0].message.content)\n\n\napp.command()litellm_hello_world\n\nif __name__ == \"__main__\":\n    app()\n"
         },
         {
           "source": null,

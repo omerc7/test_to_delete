@@ -68,3 +68,7 @@ def litellm_hello_world(
         return
 
     print(response.choices[0].message.content)
+
+
+if __name__ == "__main__":
+    litellm_hello_world(name="John")
